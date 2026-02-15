@@ -16,5 +16,3 @@ export interface VerifyResult {
 }
 
 export type MCPServerConfig = Record<string, unknown>;
-
-export type Platform = 'darwin' | 'linux' | 'win32';

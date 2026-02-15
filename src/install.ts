@@ -1,7 +1,7 @@
 import { spawnSync } from 'child_process';
 import chalk from 'chalk';
 import ui, { abortIfCancelled } from './ui.js';
-import { getAllClients, type MCPClient } from './clients/index.js';
+import { getAllClients, findClaudeBinary, type MCPClient } from './clients.js';
 import { SKILL_REPO, PLUGIN_REPO } from './constants.js';
 import { debug } from './debug.js';
 import type { InstallResult } from './types.js';
@@ -159,10 +159,7 @@ export function installSkill(): InstallResult {
 export async function installPlugin(): Promise<boolean> {
   console.log('');
 
-  // Try to find claude binary
-  const { ClaudeCodeClient } = await import('./clients/claude-code.js');
-  const claude = new ClaudeCodeClient();
-  const hasClaudeCli = await claude.isClientSupported();
+  const hasClaudeCli = findClaudeBinary() !== null;
 
   if (!hasClaudeCli) {
     ui.note(

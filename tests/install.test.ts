@@ -40,13 +40,24 @@ vi.mock('../src/ui.js', () => {
   };
 });
 
+vi.mock('../src/clients.js', async () => {
+  const actual =
+    await vi.importActual<typeof import('../src/clients.js')>(
+      '../src/clients.js',
+    );
+  return {
+    ...actual,
+    findClaudeBinary: vi.fn(() => null),
+  };
+});
+
 import { spawnSync } from 'child_process';
-import * as fs from 'fs';
 import ui from '../src/ui.js';
+import { findClaudeBinary } from '../src/clients.js';
 import { installSkill, installPlugin } from '../src/install.js';
 
 const mockSpawnSync = vi.mocked(spawnSync);
-const mockExistsSync = vi.mocked(fs.existsSync);
+const mockFindClaudeBinary = vi.mocked(findClaudeBinary);
 
 function okSpawn() {
   return {
@@ -108,9 +119,7 @@ describe('install', () => {
 
   describe('installPlugin', () => {
     it('shows manual instructions when claude CLI is not found', async () => {
-      // existsSync returns false → claude binary not found
-      // execFileSync throws → which claude fails
-      mockExistsSync.mockReturnValue(false);
+      mockFindClaudeBinary.mockReturnValue(null);
 
       const result = await installPlugin();
 
@@ -122,8 +131,7 @@ describe('install', () => {
     });
 
     it('runs marketplace add and plugin install when claude CLI exists', async () => {
-      mockExistsSync.mockReturnValue(true);
-      // marketplace add succeeds, plugin install succeeds
+      mockFindClaudeBinary.mockReturnValue('/usr/local/bin/claude');
       mockSpawnSync
         .mockReturnValueOnce(okSpawn())
         .mockReturnValueOnce(okSpawn());
@@ -133,7 +141,12 @@ describe('install', () => {
       expect(result).toBe(true);
       expect(mockSpawnSync).toHaveBeenCalledWith(
         'claude',
-        ['plugin', 'marketplace', 'add', expect.stringContaining('CodeAlive')],
+        [
+          'plugin',
+          'marketplace',
+          'add',
+          expect.stringContaining('CodeAlive'),
+        ],
         expect.any(Object),
       );
       expect(mockSpawnSync).toHaveBeenCalledWith(
@@ -144,7 +157,7 @@ describe('install', () => {
     });
 
     it('shows fallback instructions when marketplace add fails', async () => {
-      mockExistsSync.mockReturnValue(true);
+      mockFindClaudeBinary.mockReturnValue('/usr/local/bin/claude');
       mockSpawnSync.mockReturnValueOnce(failSpawn(1, 'network error'));
 
       const result = await installPlugin();
@@ -154,10 +167,8 @@ describe('install', () => {
     });
 
     it('handles already-installed plugin gracefully', async () => {
-      mockExistsSync.mockReturnValue(true);
-      // marketplace add succeeds
+      mockFindClaudeBinary.mockReturnValue('/usr/local/bin/claude');
       mockSpawnSync.mockReturnValueOnce(okSpawn());
-      // plugin install fails with "already" in stderr
       mockSpawnSync.mockReturnValueOnce(
         failSpawn(1, 'plugin already installed'),
       );
