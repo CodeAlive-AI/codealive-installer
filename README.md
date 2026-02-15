@@ -12,7 +12,21 @@ Supports three installation methods:
 
 ## Quick Start
 
+**macOS / Linux:**
+
 ```bash
+npx codealive-installer
+```
+
+**Windows (PowerShell):**
+
+```powershell
+irm https://raw.githubusercontent.com/CodeAlive-AI/codealive-installer/main/install.ps1 | iex
+```
+
+Or if you already have Node.js:
+
+```powershell
 npx codealive-installer
 ```
 
@@ -41,7 +55,11 @@ Automatically installs the MCP server to all detected agents without prompts.
 - VS Code (GitHub Copilot)
 - Windsurf
 - Cline
+- Roo Code
 - Zed
+- OpenCode
+- Codex
+- Antigravity
 
 ## Programmatic Usage
 
