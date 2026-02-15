@@ -1,0 +1,75 @@
+{
+  "name": "codealive-installer",
+  "version": "1.0.0",
+  "description": "Install CodeAlive MCP server, skill, and plugin to your AI coding agents",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "codealive-installer": "dist/bin.js"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/bin.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build && pnpm test && pnpm typecheck"
+  },
+  "keywords": [
+    "codealive",
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "coding-agent",
+    "installer",
+    "cursor",
+    "claude",
+    "claude-code",
+    "vscode",
+    "copilot",
+    "windsurf",
+    "cline",
+    "zed",
+    "skill"
+  ],
+  "author": "CodeAlive AI",
+  "license": "MIT",
+  "homepage": "https://app.codealive.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeAlive-AI/codealive-installer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CodeAlive-AI/codealive-installer/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.9.1",
+    "chalk": "^5.4.1",
+    "jsonc-parser": "^3.3.1",
+    "open": "^10.1.0",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/yargs": "^17.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}
