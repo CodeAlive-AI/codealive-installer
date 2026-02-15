@@ -22,7 +22,7 @@ vi.mock('fs', async () => {
 });
 
 vi.mock('../src/ui.js', () => {
-  const spinner = { start: vi.fn(), stop: vi.fn() };
+  const spinner = { start: vi.fn(), stop: vi.fn(), message: vi.fn() };
   return {
     default: {
       spinner: vi.fn(() => spinner),
@@ -164,6 +164,17 @@ describe('install', () => {
 
       expect(result).toBe(false);
       expect(ui.note).toHaveBeenCalled();
+    });
+
+    it('handles already-added marketplace gracefully', async () => {
+      mockFindClaudeBinary.mockReturnValue('/usr/local/bin/claude');
+      mockSpawnSync
+        .mockReturnValueOnce(failSpawn(1, 'marketplace already added'))
+        .mockReturnValueOnce(okSpawn());
+
+      const result = await installPlugin();
+
+      expect(result).toBe(true);
     });
 
     it('handles already-installed plugin gracefully', async () => {

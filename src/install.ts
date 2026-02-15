@@ -182,11 +182,12 @@ export async function installPlugin(): Promise<boolean> {
   );
 
   if (addResult.status !== 0) {
-    spinner.stop('Marketplace add failed.');
     const stderr = addResult.stderr?.toString().trim();
     if (stderr && stderr.includes('already')) {
-      ui.log.info('Marketplace already added.');
+      // Marketplace already added — continue to plugin install
+      debug('Marketplace already added, continuing...');
     } else {
+      spinner.stop('Marketplace add failed.');
       ui.log.warn(
         `Could not add marketplace automatically.${stderr ? ` ${stderr}` : ''}`,
       );
@@ -201,6 +202,7 @@ export async function installPlugin(): Promise<boolean> {
   }
 
   // Step 2: plugin install
+  spinner.message('Installing CodeAlive plugin...');
   const installResult = spawnSync(
     'claude',
     ['plugin', 'install', 'codealive@codealive-marketplace'],
@@ -208,12 +210,13 @@ export async function installPlugin(): Promise<boolean> {
   );
 
   if (installResult.status !== 0) {
-    spinner.stop('Plugin install failed.');
     const stderr = installResult.stderr?.toString().trim();
     if (stderr && stderr.includes('already')) {
-      ui.log.success('Claude Code plugin already installed.');
+      spinner.stop('Claude Code plugin is up to date.');
+      ui.log.success('Plugin already installed — configuration is current.');
       return true;
     }
+    spinner.stop('Plugin install failed.');
     ui.log.warn(
       `Could not install plugin automatically.${stderr ? ` ${stderr}` : ''}`,
     );

@@ -401,6 +401,18 @@ export class ClaudeCodeClient extends MCPClient {
     const binary = this.getBinary();
     if (!binary) return { success: false, error: 'Claude Code CLI not found' };
     try {
+      // Remove existing entry first for idempotent updates
+      try {
+        execFileSync(
+          binary,
+          ['mcp', 'remove', '--scope', 'user', MCP_SERVER_NAME],
+          { stdio: 'pipe', timeout: 10000 },
+        );
+        debug('Removed existing codealive MCP entry');
+      } catch {
+        // Not installed yet — fine
+      }
+
       const args = [
         'mcp',
         'add',
@@ -464,6 +476,17 @@ class CodexClient extends MCPClient {
     const binary = this.findCodexBinary();
     if (!binary) return { success: false, error: 'Codex CLI not found' };
     try {
+      // Remove existing entry first for idempotent updates
+      try {
+        execFileSync(binary, ['mcp', 'remove', MCP_SERVER_NAME], {
+          stdio: 'pipe',
+          timeout: 10000,
+        });
+        debug('Removed existing codealive MCP entry from Codex');
+      } catch {
+        // Not installed yet — fine
+      }
+
       const args = [
         'mcp',
         'add',
