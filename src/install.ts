@@ -1,4 +1,7 @@
 import { spawnSync } from 'child_process';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
 import chalk from 'chalk';
 import ui, { abortIfCancelled } from './ui.js';
 import { getAllClients, findClaudeBinary, type MCPClient } from './clients.js';
@@ -230,9 +233,34 @@ export async function installPlugin(): Promise<boolean> {
     return false;
   }
 
+  // Remove standalone skill to avoid duplicates (plugin bundles the skill)
+  removeStandaloneSkill();
+
   spinner.stop('Claude Code plugin installed.');
   ui.log.success(
     'Installed CodeAlive plugin with skill, auth hooks, and code explorer subagent.',
   );
   return true;
+}
+
+/**
+ * Remove the standalone codealive-context-engine skill if it exists,
+ * since the plugin already bundles it. Prevents duplicate skill entries.
+ */
+function removeStandaloneSkill(): void {
+  const skillLink = path.join(
+    os.homedir(),
+    '.claude',
+    'skills',
+    'codealive-context-engine',
+  );
+  try {
+    const stat = fs.lstatSync(skillLink);
+    if (stat.isSymbolicLink()) {
+      fs.unlinkSync(skillLink);
+      debug('Removed standalone skill symlink to avoid duplicate');
+    }
+  } catch {
+    // Doesn't exist — nothing to clean up
+  }
 }

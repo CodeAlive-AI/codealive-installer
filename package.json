@@ -1,6 +1,6 @@
 {
   "name": "@codealive/installer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Install CodeAlive MCP server, skill, and plugin to your AI coding agents",
   "type": "module",
   "main": "dist/index.js",
