@@ -83,7 +83,7 @@ function Install-NodeJS {
 
 Write-Host ""
 Write-Host "  CodeAlive Installer" -ForegroundColor Cyan
-Write-Host "  https://app.codealive.ai" -ForegroundColor DarkGray
+Write-Host "  https://docs.codealive.ai" -ForegroundColor DarkGray
 Write-Host ""
 
 # Check Node.js

@@ -1,6 +1,6 @@
 # codealive-installer
 
-Install [CodeAlive](https://app.codealive.ai) to your AI coding agents.
+Install [CodeAlive](https://docs.codealive.ai) to your AI coding agents.
 
 Supports three installation methods:
 

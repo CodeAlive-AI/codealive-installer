@@ -93,7 +93,7 @@ ${chalk.green('Done!')} Start your coding agent and try:
   ${chalk.yellow('"Show me error handling patterns across services"')}
   ${chalk.yellow('"Find similar features to guide my implementation"')}
 
-${chalk.dim('Docs:')} ${chalk.cyan('https://app.codealive.ai')}
+${chalk.dim('Docs:')} ${chalk.cyan('https://docs.codealive.ai')}
 `;
     ui.outro(outro);
   } else if (actions.includes('plugin')) {
