@@ -6,6 +6,8 @@ import { SKILL_REPO, PLUGIN_REPO } from './constants.js';
 import { debug } from './debug.js';
 import type { InstallResult } from './types.js';
 
+const isWindows = process.platform === 'win32';
+
 /**
  * Detect supported agents, let user pick, and install MCP server to each.
  */
@@ -138,7 +140,7 @@ export function installSkill(): InstallResult {
 
   const result = spawnSync('npx', ['skills', 'add', SKILL_REPO], {
     stdio: 'inherit',
-    shell: true,
+    shell: isWindows,
     timeout: 120000,
   });
 
@@ -178,7 +180,7 @@ export async function installPlugin(): Promise<boolean> {
   const addResult = spawnSync(
     'claude',
     ['plugin', 'marketplace', 'add', PLUGIN_REPO],
-    { stdio: 'pipe', shell: true, timeout: 30000 },
+    { stdio: 'pipe', shell: isWindows, timeout: 30000 },
   );
 
   if (addResult.status !== 0) {
@@ -206,7 +208,7 @@ export async function installPlugin(): Promise<boolean> {
   const installResult = spawnSync(
     'claude',
     ['plugin', 'install', 'codealive@codealive-marketplace'],
-    { stdio: 'pipe', shell: true, timeout: 30000 },
+    { stdio: 'pipe', shell: isWindows, timeout: 30000 },
   );
 
   if (installResult.status !== 0) {

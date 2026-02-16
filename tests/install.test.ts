@@ -92,7 +92,7 @@ describe('install', () => {
       expect(mockSpawnSync).toHaveBeenCalledWith(
         'npx',
         ['skills', 'add', expect.stringContaining('CodeAlive-AI')],
-        expect.objectContaining({ shell: true }),
+        expect.objectContaining({ shell: process.platform === 'win32' }),
       );
     });
 
