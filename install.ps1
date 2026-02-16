@@ -6,7 +6,7 @@
     Downloads and runs the CodeAlive installer wizard.
     Checks for Node.js and offers to install it if missing.
 .EXAMPLE
-    irm https://raw.githubusercontent.com/CodeAlive-AI/codealive-installer/main/install.ps1 | iex
+    irm https://raw.githubusercontent.com/CodeAlive-AI/@codealive/installer/main/install.ps1 | iex
 .EXAMPLE
     .\install.ps1 -ApiKey "your-key"
 .EXAMPLE
@@ -104,7 +104,7 @@ if ($major -lt 18) {
 Write-Step "Running CodeAlive installer (Node.js v$nodeVersion)..."
 
 # Build npx arguments
-$npxArgs = @("codealive-installer@latest")
+$npxArgs = @("@codealive/installer@latest")
 
 if ($ApiKey) {
     $npxArgs += "--api-key"
@@ -134,7 +134,7 @@ $exitCode = $LASTEXITCODE
 if ($exitCode -ne 0) {
     Write-Host ""
     Write-Err "Installer exited with code $exitCode."
-    Write-Host "Try running manually: npx codealive-installer" -ForegroundColor Yellow
+    Write-Host "Try running manually: npx @codealive/installer" -ForegroundColor Yellow
 }
 
 exit $exitCode

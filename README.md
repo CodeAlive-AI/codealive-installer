@@ -15,7 +15,7 @@ Supports three installation methods:
 **macOS / Linux:**
 
 ```bash
-npx codealive-installer
+npx @codealive/installer
 ```
 
 **Windows (PowerShell):**
@@ -27,7 +27,7 @@ irm https://raw.githubusercontent.com/CodeAlive-AI/codealive-installer/main/inst
 Or if you already have Node.js:
 
 ```powershell
-npx codealive-installer
+npx @codealive/installer
 ```
 
 The interactive wizard will guide you through selecting and installing components.
@@ -43,7 +43,7 @@ The interactive wizard will guide you through selecting and installing component
 ### CI Mode
 
 ```bash
-npx codealive-installer --ci --api-key YOUR_KEY
+npx @codealive/installer --ci --api-key YOUR_KEY
 ```
 
 Automatically installs the MCP server to all detected agents without prompts.
@@ -64,7 +64,7 @@ Automatically installs the MCP server to all detected agents without prompts.
 ## Programmatic Usage
 
 ```typescript
-import { runWizard, installMcp, installSkill, installPlugin } from 'codealive-installer';
+import { runWizard, installMcp, installSkill, installPlugin } from '@codealive/installer';
 
 // Run the full wizard
 await runWizard({ apiKey: 'your-key' });
