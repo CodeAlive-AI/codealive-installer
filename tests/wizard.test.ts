@@ -69,7 +69,7 @@ describe('wizard', () => {
 
     await runWizard({});
 
-    expect(mockGetApiKey).not.toHaveBeenCalled();
+    expect(mockGetApiKey).toHaveBeenCalled();
     expect(mockInstallSkill).toHaveBeenCalled();
     expect(mockInstallPlugin).not.toHaveBeenCalled();
   });
@@ -125,17 +125,8 @@ describe('wizard', () => {
     expect(mockInstallMcp).toHaveBeenCalledWith('ci-api-key', { ci: true });
   });
 
-  it('skips auth when only plugin or skill selected', async () => {
-    mockMultiselect.mockResolvedValueOnce(['plugin', 'skill']);
-
-    await runWizard({});
-
-    expect(mockGetApiKey).not.toHaveBeenCalled();
-    expect(mockGetApiKeyCi).not.toHaveBeenCalled();
-  });
-
-  it('requires auth only when MCP is selected', async () => {
-    mockMultiselect.mockResolvedValueOnce(['mcp']);
+  it('requires auth for any selection', async () => {
+    mockMultiselect.mockResolvedValueOnce(['plugin']);
 
     await runWizard({});
 

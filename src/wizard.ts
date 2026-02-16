@@ -48,8 +48,11 @@ export async function runWizard(options: WizardOptions): Promise<void> {
     );
   }
 
-  // Step 2: Authenticate
-  const needsAuth = actions.includes('mcp');
+  // Step 2: Authenticate (required for plugin, skill, and MCP)
+  const needsAuth =
+    actions.includes('mcp') ||
+    actions.includes('plugin') ||
+    actions.includes('skill');
   let apiKey: string | undefined;
 
   if (needsAuth) {
